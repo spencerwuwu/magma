@@ -1,0 +1,22 @@
+diff --git a/reqs.txt b/reqs.txt
+index 7934c64..bd6332e 100644
+--- a/reqs.txt
++++ b/reqs.txt
+@@ -1,3 +1,4 @@
+ angr
+ shellphish-qemu
+ shellphish-afl
++tqdm
+diff --git a/shellphuzz b/shellphuzz
+index 173c053..5dde53d 100755
+--- a/shellphuzz
++++ b/shellphuzz
+@@ -84,7 +84,7 @@ if __name__ == "__main__":
+     fuzzer = fuzzer.Fuzzer(
+         args.binary, args.work_dir, afl_count=args.afl_cores, force_interval=args.force_interval,
+         create_dictionary=not args.no_dictionary, stuck_callback=stuck_callback, time_limit=args.timeout,
+-        memory=args.memory, seeds=seeds, timeout=args.run_timeout,
++        memory=args.memory, qemu=False, seeds=seeds, timeout=args.run_timeout,
+     )
+ 
+     # start it!
