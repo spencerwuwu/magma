@@ -50,7 +50,13 @@ ENV FUZZER 	${MAGMA_R}/${fuzzer_path}
 USER root:root
 RUN mkdir -p ${FUZZER} && chown magma:magma ${FUZZER}
 COPY --chown=magma:magma ${magma_root}/${fuzzer_path} ${FUZZER}/
+
 RUN ${FUZZER}/preinstall.sh
+
+# my added
+ENV PATH="/usr/local/clang_9.0.0/bin:${PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/clang_9.0.0/lib:${LD_LIBRARY_PATH}"
+
 USER magma:magma
 RUN ${FUZZER}/fetch.sh && ${FUZZER}/build.sh
 
