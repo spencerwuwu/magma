@@ -29,8 +29,8 @@ echo $TARGET/corpus/$PROGRAM
 echo $OUT/$PROGRAM
 
 # run AFL master
-afl-fuzz -M afl-master -i $TARGET/corpus/$PROGRAM -o $OUT/ -- $OUT/$PROGRAM
+afl-fuzz -M afl-master -i $TARGET/corpus/$PROGRAM/ -o $OUT/ -- $OUT/$PROGRAM
 # run AFL slave
-afl-fuzz -S afl-slave -i $TARGET/corpus/$PROGRAM -o $OUT/ -- $OUT/$PROGRAM
+afl-fuzz -S afl-slave -i $TARGET/corpus/$PROGRAM/ -o $OUT/ -- $OUT/$PROGRAM
 # run QSYM
-/qsym/bin/run_qsym_afl.py -a afl-slave -o $OUT/ -n qsym -- $OUT/$PROGRAM
+/qsym/bin/run_qsym_afl.py -a afl-slave -o $OUT/ -n qsym -- $OUT/libpng_read_fuzzer_main
