@@ -57,6 +57,11 @@ RUN ${FUZZER}/preinstall.sh
 ENV PATH="/usr/local/clang_9.0.0/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/usr/local/clang_9.0.0/lib:${LD_LIBRARY_PATH}"
 
+ENV PATH="$FUZZER/repo:${PATH}"
+ENV PATH="/qsym/:${PATH}"
+
+
+
 USER magma:magma
 RUN ${FUZZER}/fetch.sh && ${FUZZER}/build.sh
 

@@ -53,12 +53,14 @@ fi
 
 if [ -t 1 ]; then
     docker run -it $flag_volume \
+	--privileged \
         --cap-add=SYS_PTRACE --env=PROGRAM="$PROGRAM" --env=ARGS="$ARGS" \
         --env=FUZZARGS="$FUZZARGS" --env=POLL="$POLL" --env=TIMEOUT="$TIMEOUT" \
         $flag_aff $flag_ep "$IMG_NAME"
 else
     container_id=$(
     docker run -dt $flag_volume \
+	--privileged \
         --cap-add=SYS_PTRACE --env=PROGRAM="$PROGRAM" --env=ARGS="$ARGS" \
         --env=FUZZARGS="$FUZZARGS" --env=POLL="$POLL" --env=TIMEOUT="$TIMEOUT" \
         $flag_aff $flag_ep "$IMG_NAME"
