@@ -22,12 +22,15 @@ cd $OUT
 #    "$OUT/$PROGRAM"  2>&1
 
 
-export PATH=$PATH:/${FUZZER}/repo/
-export PATH=$PATH:/qsym/
+#export PATH=$PATH:/${FUZZER}/repo/
+#export PATH=$PATH:/qsym/
+
+echo $TARGET/corpus/$PROGRAM
+echo $OUT/$PROGRAM
 
 # run AFL master
-afl-fuzz -M afl-master -i "$TARGET/corpus/$PROGRAM" -o "$OUT/$PROGRAM" -- $AFL_CMDLINE
+afl-fuzz -M afl-master -i $TARGET/corpus/$PROGRAM -o $OUT/ -- $OUT/$PROGRAM
 # run AFL slave
-afl-fuzz -S afl-slave -i "$TARGET/corpus/$PROGRAM" -o "$OUT/$PROGRAM" -- $AFL_CMDLINE
+afl-fuzz -S afl-slave -i $TARGET/corpus/$PROGRAM -o $OUT/ -- $OUT/$PROGRAM
 # run QSYM
-/qsym/bin/run_qsym_afl.py -a afl-slave -o "$TARGET/corpus/$PROGRAM" -n qsym -- $QSYM_CMDLINE
+/qsym/bin/run_qsym_afl.py -a afl-slave -o $OUT/ -n qsym -- $OUT/$PROGRAM

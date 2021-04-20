@@ -51,6 +51,7 @@ USER root:root
 RUN mkdir -p ${FUZZER} && chown magma:magma ${FUZZER}
 COPY --chown=magma:magma ${magma_root}/${fuzzer_path} ${FUZZER}/
 
+
 RUN ${FUZZER}/preinstall.sh
 
 # my added
@@ -63,6 +64,8 @@ RUN ${FUZZER}/fetch.sh && ${FUZZER}/build.sh
 
 ENV PATH="$FUZZER/repo:${PATH}"
 ENV PATH="/qsym/:${PATH}"
+
+
 
 ARG target_name
 ARG target_path=targets/${target_name}
@@ -90,6 +93,7 @@ ENV CFLAGS ${BUILD_FLAGS}
 ENV CXXFLAGS ${BUILD_FLAGS}
 ENV LIBS -l:magma.o -lrt
 ENV LDFLAGS -L"${OUT}" -g
+
 
 RUN ${FUZZER}/instrument.sh
 
