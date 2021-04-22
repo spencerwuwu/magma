@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:16.04
 
 # TODO remove sudo for user "magma" to avoid unwanted priv escalation from
 # other attack vectors.
@@ -13,6 +13,7 @@ ARG magma_root=./
 ## Path variables inside the container
 ENV MAGMA_R /magma
 ENV OUT		/magma_out
+ENV OUT_UN	/magma_uninstrumented
 ENV SHARED 	/magma_shared
 
 ENV CC  /usr/bin/gcc
@@ -31,9 +32,9 @@ RUN mkdir -p /home && \
 	chown magma:magma /home
 RUN	echo "magma:amgam" | chpasswd && usermod -a -G sudo magma
 
-RUN mkdir -p ${SHARED} ${OUT} && \
-	chown magma:magma ${SHARED} ${OUT} && \
-	chmod 744 ${SHARED} ${OUT}
+RUN mkdir -p ${SHARED} ${OUT} ${OUT_UN} && \
+	chown magma:magma ${SHARED} ${OUT} ${OUT_UN} && \
+	chmod 744 ${SHARED} ${OUT} ${OUT_UN} 
 
 ARG magma_path=magma
 ENV MAGMA 	${MAGMA_R}/${magma_path}
@@ -82,5 +83,17 @@ ENV LIBS -l:magma.o -lrt
 ENV LDFLAGS -L"${OUT}" -g
 
 RUN ${FUZZER}/instrument.sh
+
+USER root:root
+RUN ${FUZZER}/update_clang.sh
+USER magma:magma
+
+ARG UN_BUILD_FLAGS="-include ${MAGMA}/src/canary.h ${FIXES_FLAG} -g -O0"
+ENV CFLAGS ${UN_BUILD_FLAGS}
+ENV CXXFLAGS ${UN_BUILD_FLAGS}
+ENV LIBS -l:magma.o -lrt
+ENV LDFLAGS -L"${OUT_UN}" -g
+RUN ${FUZZER}/uninstrument.sh
+
 
 ENTRYPOINT "${MAGMA}/run.sh"
