@@ -14,6 +14,7 @@ export CC="$FUZZER/repo/afl-clang-fast"
 export CXX="$FUZZER/repo/afl-clang-fast++"
 export AS="$FUZZER/repo/afl-as"
 
+libs_orig=$LIBS
 export LIBS="$LIBS -l:afl_driver.o -lstdc++"
 
 "$MAGMA/build.sh"
@@ -22,3 +23,14 @@ export LIBS="$LIBS -l:afl_driver.o -lstdc++"
 # NOTE: We pass $OUT directly to the target build.sh script, since the artifact
 #       itself is the fuzz target. In the case of Angora, we might need to
 #       replace $OUT by $OUT/fast and $OUT/track, for instance.
+
+export CC="clang"
+export CXX="clang++"
+export AS="llvm-as"
+
+export LIBS="$libs_orig -l:driver.o -lstdc++"
+export LDFLAGS="-L${OUT_UN} -g "
+
+export OUT=$OUT_UN
+"$MAGMA/build.sh"
+"$TARGET/build.sh"

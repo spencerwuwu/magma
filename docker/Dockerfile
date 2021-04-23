@@ -84,16 +84,4 @@ ENV LDFLAGS -L"${OUT}" -g
 
 RUN ${FUZZER}/instrument.sh
 
-USER root:root
-RUN ${FUZZER}/update_clang.sh
-USER magma:magma
-
-ARG UN_BUILD_FLAGS="-include ${MAGMA}/src/canary.h ${FIXES_FLAG} -g -O0"
-ENV CFLAGS ${UN_BUILD_FLAGS}
-ENV CXXFLAGS ${UN_BUILD_FLAGS}
-ENV LIBS -l:magma.o -lrt
-ENV LDFLAGS -L"${OUT_UN}" -g
-RUN ${FUZZER}/uninstrument.sh
-
-
 ENTRYPOINT "${MAGMA}/run.sh"
