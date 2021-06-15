@@ -55,6 +55,7 @@ docker build -t "$IMG_NAME" \
     --build-arg GROUP_ID=$(id -g $USER) \
 	--build-arg bug="${BUG}" \
 	--build-arg program="${PROGRAM}" \
+	--no-cache \
     $mode_flag $isan_flag $harden_flag \
     -f "$MAGMA/docker/Dockerfile" "$MAGMA"
 set +x
