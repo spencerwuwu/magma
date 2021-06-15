@@ -64,6 +64,11 @@ RUN ${TARGET}/preinstall.sh
 USER magma:magma
 RUN ${TARGET}/fetch.sh && ${MAGMA}/apply_patches.sh
 
+ARG bug
+ENV BUG 	${bug}
+ARG program
+ENV PROGRAM 	${program}
+
 ## Configuration parameters
 ARG isan
 ARG harden
@@ -83,4 +88,4 @@ ENV LDFLAGS -L"${OUT}" -g
 
 RUN ${FUZZER}/instrument.sh
 
-ENTRYPOINT "${MAGMA}/run.sh"
+#ENTRYPOINT "${MAGMA}/run.sh"

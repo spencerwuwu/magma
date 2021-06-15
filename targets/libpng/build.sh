@@ -22,8 +22,12 @@ make -j$(nproc) libpng16.la
 
 cp .libs/libpng16.a "$OUT/"
 
+
+
 # build libpng_read_fuzzer.
 $CXX $CXXFLAGS -std=c++11 -I. \
      contrib/oss-fuzz/libpng_read_fuzzer.cc \
-     -o $OUT/libpng_read_fuzzer \
+     -o libpng_read_fuzzer \
      $LDFLAGS .libs/libpng16.a $LIBS -lz
+
+cp libpng_read_fuzzer "$OUT/"
